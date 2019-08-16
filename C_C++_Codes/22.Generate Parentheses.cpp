@@ -5,41 +5,30 @@
 using namespace std;
 // GENERATE PARENTHESES
 //Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
-void _generateParenthesis(int position,int n, int open,int close);
-void generateParenthesis(int n)
-{
-	if(n>0)
-	_generateParenthesis(0,n,0,0);
-	return;
+
+/*Algo: Instead of adding '(' or ')' every time, let's only add them when we know it will remain a valid sequence. 
+We can do this by keeping track of the number of opening and closing brackets we have placed so far.
+We can start an opening bracket if we still have one (of n) left to place. And we can start a closing 
+bracket if it would not exceed the number of opening brackets.*/
+
+/*Time Complexity : O({4^n}/{sqrt{n}}) 
+Each valid sequence has at most n steps during the backtracking procedure.
+
+Space Complexity : O({4^n}/{sqrt{n}}) 
+*/
+
+void dfs(string s, int opens, int closes, vector<string> &res) {
+    if(!opens && !closes) res.push_back(s);
+    if(opens) dfs(s + '(', opens - 1, closes, res);
+    if(opens < closes) dfs(s + ')', opens, closes - 1, res);
 }
-void _generateParenthesis(int position,int n, int open,int close)
-{
-	static char str[MAX];
-	//static vector <char> str;
-	//vector <int> :: const_iterator i;
-	if(close==n)
-	{
-		//for(auto i=str.begin();i!=str.end();++i)
-		//cout<<*i<<endl;
-		cout<<str<<endl;
-		return;
-	}
-	else
-	{
-		if(open<n)
-		{
-			str[position]='{';
-			//str.push_back('{');
-			_generateParenthesis(position+1,n,open+1,close);
-		}
-		if(open>close)
-		{
-			//str.push_back('}');
-			str[position]='}';
-			_generateParenthesis(position+1,n,open,close+1);
-		}
-	}
+
+vector<string> generateParenthesis(int n) {
+        vector<string> res;
+    dfs("", n, n, res);
+    return res;
 }
+
 int main()
 {
 	int n=2;
