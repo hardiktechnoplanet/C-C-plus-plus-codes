@@ -4,6 +4,60 @@
 #define c 3
 using namespace std;
 
+// O(log(nm))   https://www.youtube.com/watch?v=FOa55B9Ikfg
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) 
+    {
+        //test case
+        if(matrix.size()==0)
+        {
+            return false;
+        }
+        
+        /*
+        The left and right pointer to our search. We imagine a visualization
+        of a 1D array and will use our mapping system to convert these indices
+        into concrete locations in the 2D matrix.
+        The the last position in the matrix if we consider it as array will be
+        rows * cols - 1 indices.
+        Same as an array...an array's last index is arr.length - 1.
+      */
+        
+        int totalRows=matrix.size();
+        int totalCols=matrix[0].size();
+        
+        int left=0, right=totalRows*totalCols-1;
+        
+         
+        //Continue searching while the left has not passed the right
+        while(left<=right)
+        {
+            //Prevent overflow, find the middle this 
+            //way instead of doing: (right + left) / 2
+            int mid=left+((right-left)/2);
+            
+            // We need to map from our conceptualized 1D 
+            //array back to our 2D matrix to index into it.
+            int midElementVal=matrix[mid/totalCols][mid%totalCols];
+            
+            if(midElementVal==target)
+            {
+                return true;
+            }
+            else if(midElementVal<target)
+            {
+                left=mid+1;
+            }
+            else
+            {
+                right=mid-1;
+            }
+        }
+        return false;
+        
+    }
+};
 /*
 bool SearchMat(int mat[r][c],int m, int n,int target)
 {
