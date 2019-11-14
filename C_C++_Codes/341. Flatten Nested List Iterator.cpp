@@ -20,24 +20,12 @@ public:
     queue<int> q;
     NestedIterator(vector<NestedInteger> &nestedList) 
     {
-        //traverse through the vector
-        for(size_t i=0;i<nestedList.size();++i)
-        {
-            //if the current element is an int
-            if(nestedList[i].isInteger())
-            {
-                q.push(nestedList[i].getInteger());
-            }
-            //current element is a list
-            else
-            {
-                helper(nestedList[i].getList());
-            }
-        }
+        helper(nestedList);
         
     }
-    void helper(vector<NestedInteger>& nestedList)
+    void helper(vector<NestedInteger> nestedList)
     {
+        //traverse through the vector
         for(size_t i=0;i<nestedList.size();++i)
         {
             //if the list contains int
