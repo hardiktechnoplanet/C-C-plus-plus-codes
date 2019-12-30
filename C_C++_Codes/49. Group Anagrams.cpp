@@ -1,62 +1,62 @@
-#include<bits/stdc++.h>
-#include <iostream>
-using namespace std;
-// utility function for printing anagram list
-void printAnagram(unordered_map<string,
-                              vector<string> >& store)
-{
-    unordered_map<string, vector<string> >::iterator it;
-    for (it = store.begin(); it != store.end(); it++) {
-        vector<string> temp_vec(it->second);
-        int size = temp_vec.size();
-        if (size > 1) {
-            for (int i = 0; i < size; i++) {
-                cout << temp_vec[i] << " ";
-            }
-            cout << "\n";
+/*Time Complexity: O(NKlogK), where N is the length of strs, and K is the maximum length of a string in strs. 
+The outer loop has complexity O(N) as we iterate through each string. Then, we sort each string in O(KlogK) time.
+
+Space Complexity: O(NK), the total information content stored in result.*/
+/*class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) 
+    {
+        vector<vector<string>> result;
+        unordered_map<string,vector<string>> mem;
+        
+        for(size_t i=0;i<strs.size();++i)
+        {
+            string temp=strs[i];
+            //sort the string, the sorted string will be our key
+            sort(temp.begin(),temp.end());
+            
+            mem[temp].push_back(strs[i]);
         }
+        
+        for(auto x: mem)
+            result.push_back(x.second);
+        
+        return result;
+        
     }
-}
-void groupAnagram(vector<string>& vec)
-{
-	unordered_map<string, vector<string> > store;
-	for(int i=0;i<vec.size();i++)
-	{
-		string tempString(vec[i]);
-		//sort the string
-		sort(tempString.begin(),tempString.end());
-		
-		//check if the sorted string is present in the store
-		//if it is not present
-		if(store.find(tempString)==store.end())
-		{
-			vector<string> temp_vec;
-			temp_vec.push_back(vec[i]);
-			//store the key and the string in the store. Here key is the sorted string
-			store.insert(make_pair(tempString,temp_vec));
-		}
-		//if it is present in store
-		else
-		{
-			vector<string> temp_vec(store[tempString]);
-			//push the string on the same key 
-			temp_vec.push_back(vec[i]);
-			store[tempString]=temp_vec;
-		}
-	}
-	printAnagram(store);
-}
-int main()
-{
-	vector<string> arr;
-	arr.push_back("geeksquiz");
-	arr.push_back("geeksforgeeks");
-	arr.push_back("forgeeksgeeks");
-	arr.push_back("zuiqkeegs");
-	arr.push_back("abcd");
-	arr.push_back("cat");
-	arr.push_back("tac");
-	arr.push_back("act");
-	groupAnagram(arr);
-	return 0;
-}
+};*/
+
+/*Time Complexity: O(NK), where N is the length of strs, and K is the maximum length of a string in strs. 
+Counting each string is linear in the size of the string, and we count every string.
+
+Space Complexity: O(NK), the total information content stored in anagrams.*/
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> mp;
+        for (string s : strs) {
+            mp[strSort(s)].push_back(s);
+        }
+        vector<vector<string>> anagrams;
+        for (auto p : mp) { 
+            anagrams.push_back(p.second);
+        }
+        return anagrams;
+    }
+private:
+    string strSort(string s) {
+        int counter[26] = {0};
+        for (char c : s) {
+            counter[c - 'a']++;
+        }
+        string t;
+        for (int c = 0; c < 26; c++) {
+            //cout<<counter[c]<<"\t"<< c + 'a'<<endl;
+            t += string(counter[c], c + 'a');
+            //cout<<t<<endl;
+        }
+          //cout<<t<<endl;
+        return t;
+    }
+};
