@@ -1,7 +1,3 @@
-#include <iostream>
-
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
-
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -11,41 +7,61 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-// Time complexity: O(n), space complexity: O(n) (function calls will be stacked)
-class Solution {
+//Solution 1: Recursive
+/*class Solution {
 public:
+    bool isSymmetric(TreeNode* root) {
+        return isSymmetricHelper(root->left,root->right);
+    }
+    
     bool isSymmetricHelper(TreeNode* left, TreeNode* right)
     {
-        //base cases
-        //if left or rigt node is NULL, for symmetric tree, they both should
-        // be NULL
-        if(left==NULL || right==NULL)
-        {
-            return left==right;
-        }
-        //left node val should be same as right node val
-        if(left->val!=right->val)
-        {
-            return false;
-        }
-        
-        //recursion
-        // tree to be symmetrics, left subtree of left node should be same as
-        //right subtree of right node and right subtree of left node should be
-        //same as left subtree of right node
-        return isSymmetricHelper(left->left,right->right) && 
-            isSymmetricHelper(left->right, right->left);
-    }
-    bool isSymmetric(TreeNode* root) {
-        //if root is NULL, the tree is kind of symmetric
-        if(root==NULL)
-        {
+        if(left==NULL and right==NULL)
             return true;
-        }
-        return isSymmetricHelper(root->left,root->right);
         
+        if(left->val!=right->val)
+            return false;
+        
+        return isSymmetricHelper(left->left,right->right)&&
+            isSymmetricHelper(left->right,right->left);
+       // return false;
     }
+};*/
+
+//Solution 2: check leetcode solution
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) 
+    {
+        //test case
+        if(root==NULL)
+            return true;
+        
+        queue<TreeNode*> q;
+        q.push(root);
+        q.push(root);
+        
+        while(!q.empty())
+        {
+            TreeNode* t1=q.front();
+            q.pop();
+            TreeNode* t2=q.front();
+            q.pop();
+            
+            if(t1==NULL && t2==NULL)
+                continue;
+            else if(t1==NULL || t2==NULL)
+                return false;
+            else if(t1->val!=t2->val)
+                return false;
+            
+            q.push(t1->left);
+            q.push(t2->right);
+            q.push(t1->right);
+            q.push(t2->left);
+        }
+        return true;
+    }
+    
+    
 };
-int main(int argc, char** argv) {
-	return 0;
-}
