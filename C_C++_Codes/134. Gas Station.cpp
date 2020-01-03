@@ -5,6 +5,10 @@ public:
     {
         int total_tank=0, curr_tank=0, starting_station=0;
         
+        /*start from the first gas station and keep track of total tank so far
+        and curr tank. If at any station the curr tank <0 it means that we can not
+        reach here. So, change the starting station to next of that station and make
+        curr tank to 0 again*/
         for(size_t i=0;i<gas.size();++i)
         {
             total_tank +=gas[i]-cost[i];
