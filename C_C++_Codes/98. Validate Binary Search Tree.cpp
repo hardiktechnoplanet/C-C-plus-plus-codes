@@ -1,7 +1,3 @@
-#include <iostream>
-
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
-
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -11,13 +7,19 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
- 
-// Time complexity: O(n)
-class Solution {
+//Solution 1: Recursive
+/*class Solution {
 public:
-    bool isValidBSTHelper(TreeNode* node, TreeNode* lft=NULL, TreeNode* rgt=NULL)
+    bool isValidBST(TreeNode* root) {
+        if(root==NULL)
+        {
+            return true;
+        }
+        return isValidBSTHelper(root,NULL,NULL);
+    }
+    bool isValidBSTHelper(TreeNode* node,TreeNode* lft,TreeNode* rgt)
     {
-        //base cases
+         //base cases
         if(node==NULL)
         {
             return true;
@@ -34,18 +36,47 @@ public:
         }
         
         // recursion
-        // check recursively for every node. 
+        // check recursively for every node.
+        //while going to left, the nodes->left value should be > lft(min) and < nodes value(max)
         return isValidBSTHelper(node->left,lft,node) and
+            
+        //while going to right, the nodes->right value should be > node's value(min) and < rgt (max)
         isValidBSTHelper(node->right,node,rgt);
-        
-    }
-    bool isValidBST(TreeNode* root) {
-        //empty tree is valid binary tree
-        //call the helper function
-        return isValidBSTHelper(root,NULL,NULL);
-        
     }
 };
-int main(int argc, char** argv) {
-	return 0;
-}
+*/
+//Solution 2: Iterative: the inorder traversal should be in sorted order
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        if(root==NULL)
+        {
+            return true;
+        }
+        stack<TreeNode*> st;
+        TreeNode* curr=root;
+        TreeNode* prev=NULL;
+        
+        while(curr!=NULL || !st.empty())
+        {
+            if(curr!=NULL)
+            {
+                st.push(curr);
+                curr=curr->left;
+            }
+            else
+            {
+                if(!st.empty())
+                {
+                    curr=st.top();
+                    st.pop();
+                }
+                if(prev!=NULL && curr->val <=prev->val)
+                    return false;
+                prev=curr;
+                curr=curr->right;
+            }
+        }
+        return true;
+    }
+};
