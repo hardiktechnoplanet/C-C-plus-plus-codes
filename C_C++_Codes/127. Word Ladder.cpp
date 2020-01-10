@@ -2,6 +2,8 @@
 //Push the begin word in the queue and take a level variable. In the loop check the neighbors of queue element and
 //push them in the queue and increase the level. Neighbors are the elements that are different by one letter and 
 //helper function will find them. Once the queue front is the endword, return the level.
+
+//Time Complexity: O(M×N), where M is the length of words and N is the total number of words in the input word list.
 class Solution {
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) 
@@ -20,12 +22,12 @@ public:
         //level will be our answer
         //we will increase the level after we move from one word to another
         int level=0;
-        //to store the neighbors
-        vector<string> neigh;
-        
+               
         //process the tree
         while(!q.empty())
         {
+            //to store the neighbors
+            vector<string> neigh;
             int size=q.size();
             while(size>0)
             {
@@ -74,4 +76,34 @@ public:
         }
         return ans;
     }
+    
+    /*vector<string> helper(string& input,unordered_set<string>& hash)
+    {
+        vector<string> ans;
+        unordered_set<string>::iterator it;
+        for(it=hash.begin();it!=hash.end();++it)
+        {
+            string fromDict=*it;
+            if(input.length()==fromDict.length())
+            {
+                if(isOneReplace(input,fromDict))
+                    ans.push_back(fromDict);
+            }
+        }
+        return ans;
+    }
+    bool isOneReplace(string& s1, string& s2)
+    {
+        bool flag=false;
+        for(size_t i=0;i<s1.length();++i)
+        {
+            if(s1[i]!=s2[i])
+            {
+                if(flag==true)
+                    return false;
+                flag=true;
+            }
+        }
+        return true;
+    }*/
 };
