@@ -1,8 +1,3 @@
-/*Solution 1: Iterative - O(n)
-Start from the head node and traverse the list. While traversing 
-swap data of each node with its next node’s data.
-*/
-
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -11,7 +6,42 @@ swap data of each node with its next node’s data.
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+
+//Solution 1: Iterative
 class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) 
+    {
+        //test case
+        if(head==NULL || head->next==NULL)
+            return head;
+        ListNode* dummy=new ListNode(-1);
+        ListNode* prevNode=dummy;
+        
+        while(head!=NULL && head->next!=NULL)
+        {
+            //nodes to be swapped
+            ListNode* firstNode=head;
+            ListNode* secondNode=head->next;
+            
+            //swap the nodes
+            prevNode->next=secondNode;
+            firstNode->next=secondNode->next;
+            secondNode->next=firstNode;
+            
+            //reinitialize head and prevNode for next swap
+            prevNode=firstNode;
+            head=firstNode->next;
+        }
+        return dummy->next;   
+    }
+};
+
+/*Solution 2: Iterative - O(n)
+Start from the head node and traverse the list. While traversing 
+swap data of each node with its next nodeâ€™s data.
+*/
+/*class Solution {
 public:
     ListNode* swapPairs(ListNode* head) 
     {
@@ -30,8 +60,8 @@ public:
         return head;   
     }
 };
-
-/*Solution 2: Recursive - O(n)
+*/
+/*Solution 3: Recursive - O(n)
 If there are 2 or more than 2 nodes in Linked List then swap the first 
 two nodes and recursively call for rest of the list.
 */
