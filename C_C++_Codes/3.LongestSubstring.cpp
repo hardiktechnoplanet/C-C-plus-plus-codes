@@ -23,6 +23,7 @@ int lengthOfLongestSubstring(string s)
         return maxLen;
 	*/
 	
+	// Time complexity O(n), space complexity O(K) where K is the size of set.
 	//creat a hashset
 	set <char> arr;
 	int n=s.length();
@@ -52,6 +53,35 @@ int lengthOfLongestSubstring(string s)
 	cout<<"ans: "<<ans;
 	return ans;
 }
+
+//Solution 2: Optimized sliding window
+/* if s[j] have a duplicate in the range [i, j) with index j' 
+ , we don't need to increase i little by little. We can skip all the elements 
+ in the range [i, j'] and let i to be j' + 1.
+ 
+If the character is already in the hashmap, then move the left pointer to the right 
+of the same character last found. Note that the two pointers can only move forward.*/
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) 
+    {
+        if(s.length()==0)
+            return 0;
+        
+        unordered_map<char,int> hashMap;
+        int ans=0;
+        for(int j=0,i=0;j<s.length();++j)
+        {
+            if(hashMap.find(s[j])!=hashMap.end())
+                i=max(i,hashMap[s[j]]+1);
+            
+            ans=max(ans,j-i+1);
+            hashMap[s[j]]=j;
+        }
+	return ans;
+        
+    }
+};
 int main()
 {
 	//char s[]="pwwkew";
